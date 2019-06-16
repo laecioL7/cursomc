@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.cursomc.domain.Categoria;
 import com.example.cursomc.domain.Cidade;
+import com.example.cursomc.domain.Cliente;
+import com.example.cursomc.domain.Endereco;
 import com.example.cursomc.domain.Estado;
 import com.example.cursomc.domain.Produto;
+import com.example.cursomc.domain.enums.TipoCliente;
 import com.example.cursomc.repositories.CategoriaRepository;
 import com.example.cursomc.repositories.CidadeRepository;
+import com.example.cursomc.repositories.ClienteRepository;
+import com.example.cursomc.repositories.EnderecoRepository;
 import com.example.cursomc.repositories.EstadoRepository;
 import com.example.cursomc.repositories.ProdutoRepository;
 
@@ -25,6 +30,12 @@ public class CursomcApplication implements CommandLineRunner
 	private CidadeRepository cidadeRepository;
 	@Autowired
 	private EstadoRepository estadoRepository;
+
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
@@ -74,6 +85,21 @@ public class CursomcApplication implements CommandLineRunner
 		//salva pelo repository
 		estadoRepository.saveAll(Arrays.asList(esSaoPaulo,esMinasGerais));
 		cidadeRepository.saveAll(Arrays.asList(cidUberlandia,cidSaoPaulo,cidCampinas));
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA, "");
+		
+		//salva a lista de telefones
+		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+
+		//cria os endereços
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, cidUberlandia);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, cidSaoPaulo);
+
+		//salva os enderecos no cliente
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 	}
 
 }

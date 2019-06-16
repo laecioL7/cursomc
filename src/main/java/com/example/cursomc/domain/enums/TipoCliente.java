@@ -25,20 +25,22 @@ public enum TipoCliente
 
 	public static TipoCliente toEnum(Integer cod)
 	{
-
+		//se o codigo for nulo
 		if (cod == null)
 		{
 			return null;
 		}
 
-		for (TipoCliente x : TipoCliente.values())
+		//percorre a lista da enum e retorna se achar a enum correspondente ao codigo
+		for (TipoCliente tipoCliente : TipoCliente.values())
 		{
-			if (cod.equals(x.getCod()))
+			if (cod.equals(tipoCliente.getCod()))
 			{
-				return x;
+				return tipoCliente;
 			}
 		}
 
+		//se não lança uma excessão com mensagem
 		throw new IllegalArgumentException("Id inválido: " + cod);
 	}
 
