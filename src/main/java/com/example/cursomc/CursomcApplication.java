@@ -8,8 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.cursomc.domain.Categoria;
+import com.example.cursomc.domain.Cidade;
+import com.example.cursomc.domain.Estado;
 import com.example.cursomc.domain.Produto;
 import com.example.cursomc.repositories.CategoriaRepository;
+import com.example.cursomc.repositories.CidadeRepository;
+import com.example.cursomc.repositories.EstadoRepository;
 import com.example.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -17,6 +21,10 @@ public class CursomcApplication implements CommandLineRunner
 {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	@Autowired
+	private EstadoRepository estadoRepository;
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
@@ -50,6 +58,22 @@ public class CursomcApplication implements CommandLineRunner
 		//salva todos objetos com os dados no banco
 		categoriaRepository.saveAll(Arrays.asList(catInformatica,catEscritorio));
 		produtoRepository.saveAll(Arrays.asList(prComputador,prImpressora,prMouse));
+	
+		Estado esMinasGerais = new Estado(null,"Minas Gerais");
+		Estado esSaoPaulo = new Estado(null,"São Paulo");
+		
+		//instancia e faz a associação muitos para um com o objeto
+		Cidade cidUberlandia = new Cidade(null, "Uberlândia", esMinasGerais);
+		Cidade cidSaoPaulo = new Cidade(null, "São Paulo", esSaoPaulo);
+		Cidade cidCampinas = new Cidade(null, "Campinas", esSaoPaulo);
+		
+		//instancia e passa a lista de cidades para o estado
+		esMinasGerais.getCidades().add(cidUberlandia);
+		esSaoPaulo.getCidades().addAll(Arrays.asList(cidSaoPaulo,cidCampinas));
+		
+		//salva pelo repository
+		estadoRepository.saveAll(Arrays.asList(esSaoPaulo,esMinasGerais));
+		cidadeRepository.saveAll(Arrays.asList(cidUberlandia,cidSaoPaulo,cidCampinas));
 	}
 
 }
