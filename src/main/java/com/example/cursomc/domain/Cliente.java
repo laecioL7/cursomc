@@ -45,7 +45,8 @@ public class Cliente implements Serializable
 
 	//private Set<Integer> perfis = new HashSet<>();
 
-	//private List<Pedido> pedidos = new ArrayList<>();
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
 
 	public Cliente()
 	{
@@ -153,7 +154,7 @@ public class Cliente implements Serializable
 		this.telefones = telefones;
 	}
 
-	/*public List<Pedido> getPedidos()
+	public List<Pedido> getPedidos()
 	{
 		return pedidos;
 	}
@@ -161,7 +162,7 @@ public class Cliente implements Serializable
 	public void setPedidos(List<Pedido> pedidos)
 	{
 		this.pedidos = pedidos;
-	}*/
+	}
 
 	@Override
 	public int hashCode()

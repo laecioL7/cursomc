@@ -31,6 +31,7 @@ public enum EstadoPagamento
 			return null;
 		}
 
+		//percorre a lista da enum e retorna se achar a enum correspondente ao codigo
 		for (EstadoPagamento x : EstadoPagamento.values())
 		{
 			if (cod.equals(x.getCod()))
