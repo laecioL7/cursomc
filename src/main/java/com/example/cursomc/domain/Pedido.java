@@ -42,7 +42,10 @@ public class Pedido implements Serializable
 	@JoinColumn(name="endereco_de_entrega_id")
 	private Endereco enderecoDeEntrega;
 
-	//private Set<ItemPedido> itens = new HashSet<>();
+	//um pedido tem varios itens
+	//set nao deixa itens repetidos
+	@OneToMany(mappedBy = "id.pedido")
+	private Set<ItemPedido> itens = new HashSet<>();
 
 	public Pedido()
 	{
@@ -117,7 +120,7 @@ public class Pedido implements Serializable
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
 
-	/*public Set<ItemPedido> getItens()
+	public Set<ItemPedido> getItens()
 	{
 		return itens;
 	}
@@ -125,7 +128,7 @@ public class Pedido implements Serializable
 	public void setItens(Set<ItemPedido> itens)
 	{
 		this.itens = itens;
-	}*/
+	}
 
 	@Override
 	public int hashCode()
