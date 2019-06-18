@@ -15,6 +15,7 @@ public class ItemPedido implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	//sera chave composta de produto e pedido
+	@JsonIgnore
 	@EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();
 
@@ -41,6 +42,7 @@ public class ItemPedido implements Serializable
 		return (preco - desconto) * quantidade;
 	}
 
+	@JsonIgnore
 	public Pedido getPedido()
 	{
 		return id.getPedido();
