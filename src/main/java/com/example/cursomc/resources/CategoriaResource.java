@@ -29,7 +29,7 @@ public class CategoriaResource
 		Categoria categoria = null;
 		
 		//chama a rn para buscar a categoria no banco
-		categoria = categoriaService.buscar(id);
+		categoria = categoriaService.find(id);
 		
 		//retorna a busca
 		return ResponseEntity.ok().body(categoria);
@@ -49,5 +49,19 @@ public class CategoriaResource
 		
 		//manda a resposta
 		return ResponseEntity.created(uri).build();
+	}
+	
+	/**Recebe uma categoria no formato json e ATUALIZA no banco de dados*/
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id)
+	{
+		//força o id da url no objeto
+		obj.setId(id);
+		
+		//chama a rn para atualizar o objeto que já tem um ID
+		obj = categoriaService.update(obj);
+		
+		//retorna uma resposta vazia
+		return ResponseEntity.noContent().build();
 	}
 }

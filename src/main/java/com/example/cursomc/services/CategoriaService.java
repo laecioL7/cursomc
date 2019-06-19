@@ -18,7 +18,7 @@ public class CategoriaService
 	private CategoriaRepository categoriaRepository;
 
 	/**Busca uma categoria dado um ID*/
-	public Categoria buscar(Integer iId)
+	public Categoria find(Integer iId)
 	{
 		Optional<Categoria> objCategoria = null;
 		
@@ -37,6 +37,17 @@ public class CategoriaService
 		categoria.setId(null);
 		
 		//chama a dao para salvar o objeto retornando o objeto resposta
+		return categoriaRepository.save(categoria);
+	}
+	
+
+	/**Atualiza uma categoria que tenha id*/
+	public Categoria update(Categoria categoria)
+	{
+		//verifica se o objeto já existe no banco e se não existir, o metodo lança uma excessao para fora do metodo
+		find(categoria.getId());
+		
+		//chama a dao para atualizar o objeto retornando o objeto resposta
 		return categoriaRepository.save(categoria);
 	}
 }
