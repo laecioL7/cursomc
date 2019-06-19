@@ -1,6 +1,8 @@
 package com.example.cursomc.resources;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.cursomc.domain.Categoria;
+import com.example.cursomc.dto.CategoriaDTO;
 import com.example.cursomc.services.CategoriaService;
 
 /**É o mesmo que uma REST*/
@@ -74,5 +77,29 @@ public class CategoriaResource
 		
 		//retorna uma resposta vazia
 		return ResponseEntity.noContent().build();
+	}
+	
+	/**Retorna todas as categorias*/
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll()
+	{
+		List<Categoria> listaCategoria = null;
+		List<CategoriaDTO> listaCatDto = null;
+		
+		//chama a rn para buscar todas as categorias no banco
+		listaCategoria = categoriaService.findAll();
+		
+		//instancia a lista dto
+		listaCatDto = new ArrayList<CategoriaDTO>();
+		
+		//percorre a lista e guarda os objetos de categoria na lista de categoriaDTo
+		for(Categoria categoria: listaCategoria)
+		{
+			//converte a categoria para a dto e guarda na lista
+			listaCatDto.add(new CategoriaDTO(categoria));
+		}
+		
+		//retorna a busca
+		return ResponseEntity.ok().body(listaCatDto);
 	}
 }

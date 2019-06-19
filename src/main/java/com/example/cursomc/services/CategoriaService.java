@@ -1,5 +1,6 @@
 package com.example.cursomc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,12 @@ public class CategoriaService
 			//lança a excessão personalizada com a mensagem
 			throw new DataIntegrityException("Não é possível excluir uma categoria com produtos!");
 		}
+	}
+	
+	/*busca todas as categorias no banco*/
+	public List<Categoria> findAll()
+	{
+		//busca no banco e retorna a lista de categorias
+		return categoriaRepository.findAll();
 	}
 }
