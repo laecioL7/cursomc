@@ -1,15 +1,20 @@
 package com.example.cursomc.resources;
 
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import com.example.cursomc.domain.Categoria;
 import com.example.cursomc.services.CategoriaService;
 
-/**É o mesmo que uma RN para Categoria*/
+/**É o mesmo que uma REST*/
 @RestController
 @RequestMapping(value="/categorias")
 public class CategoriaResource
@@ -28,5 +33,21 @@ public class CategoriaResource
 		
 		//retorna a busca
 		return ResponseEntity.ok().body(categoria);
+	}
+	
+	/**Recebe uma categoria no formato json e salva no banco de dados
+	 * @param requestBody : faz o objeto ser convertido para json automaticamente*/
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@RequestBody Categoria obj)
+	{
+		/*chama a RN para salvar lidar com a dao e salvar o objeto
+		*criando um novo ID no banco automaticamente*/
+		obj = categoriaService.insert(obj);
+		
+		//pega a uri da requisição e junta com a uri do novo recurso que foi inserido para a resposta
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		
+		//manda a resposta
+		return ResponseEntity.created(uri).build();
 	}
 }

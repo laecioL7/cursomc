@@ -9,6 +9,7 @@ import com.example.cursomc.domain.Categoria;
 import com.example.cursomc.exceptions.ObjectNotFoundException;
 import com.example.cursomc.repositories.CategoriaRepository;
 
+/**é o mesmo que um RN para categoria*/
 @Service
 public class CategoriaService
 {
@@ -27,5 +28,15 @@ public class CategoriaService
 		//retorna o objeto se achou, se não retorna um erro personalizado
 		return objCategoria.orElseThrow(() -> new ObjectNotFoundException(
 		"Objeto não encontrado! Id: " + iId + ", Tipo: " + Categoria.class.getName()));
+	}
+	
+	/**Insere uma categoria*/
+	public Categoria insert(Categoria categoria)
+	{
+		//força o id ser nulo para não ocorrer update e sim inserção
+		categoria.setId(null);
+		
+		//chama a dao para salvar o objeto retornando o objeto resposta
+		return categoriaRepository.save(categoria);
 	}
 }

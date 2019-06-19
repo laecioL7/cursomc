@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.cursomc.domain.Categoria;
 
-/**Automaticamente implementa todos os metodos de acesso a dados*/
+/**Automaticamente implementa todos os metodos de acesso a dados (DAO)*/
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Integer>
 {
