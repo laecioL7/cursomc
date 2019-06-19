@@ -3,9 +3,11 @@ package com.example.cursomc.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.example.cursomc.domain.Categoria;
+import com.example.cursomc.exceptions.DataIntegrityException;
 import com.example.cursomc.exceptions.ObjectNotFoundException;
 import com.example.cursomc.repositories.CategoriaRepository;
 
@@ -49,5 +51,23 @@ public class CategoriaService
 		
 		//chama a dao para atualizar o objeto retornando o objeto resposta
 		return categoriaRepository.save(categoria);
+	}
+	
+	/**Recebe um id e deleta no banco*/
+	public void delete(Integer id)
+	{
+		try
+		{
+		//verifica se o objeto já existe no banco e se não existir, o metodo lança uma excessao para fora do metodo
+		find(id);
+		
+		//chama a dao para excluir
+		categoriaRepository.deleteById(id);
+		}
+		catch (DataIntegrityViolationException err) 
+		{
+			//lança a excessão personalizada com a mensagem
+			throw new DataIntegrityException("Não é possível excluir uma categoria com produtos!");
+		}
 	}
 }

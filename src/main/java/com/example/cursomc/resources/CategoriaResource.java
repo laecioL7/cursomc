@@ -64,4 +64,15 @@ public class CategoriaResource
 		//retorna uma resposta vazia
 		return ResponseEntity.noContent().build();
 	}
+	
+	/**Recebe um id da requisição para deletar uma categoria*/
+	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
+	public ResponseEntity<Categoria> delete(@PathVariable Integer id)
+	{	
+		//chama a rn para deletar a categoria no banco
+		categoriaService.delete(id);
+		
+		//retorna uma resposta vazia
+		return ResponseEntity.noContent().build();
+	}
 }
