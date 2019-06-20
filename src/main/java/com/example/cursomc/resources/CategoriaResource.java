@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -46,17 +48,20 @@ public class CategoriaResource
 	 * @param requestBody : faz o objeto ser convertido para json automaticamente
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj)
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO categoriaDto)
 	{
-		/*
-		 * chama a RN para salvar lidar com a dao e salvar o objeto criando um novo ID
-		 * no banco automaticamente
-		 */
-		obj = categoriaService.insert(obj);
+		Categoria categoria = null;
+		
+		//converte o objeto dto para objeto normal
+		categoria = CategoriaService.fromDTO(categoriaDto);
+		
+		/*chama a RN para salvar lidar com a dao e salvar o objeto criando um novo ID
+		 * no banco automaticamente*/
+		categoria = categoriaService.insert(categoria);
 
 		// pega a uri da requisição e junta com a uri do novo recurso que foi inserido
 		// para a resposta
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId()).toUri();
 
 		// manda a resposta
 		return ResponseEntity.created(uri).build();
@@ -64,13 +69,18 @@ public class CategoriaResource
 
 	/** Recebe uma categoria no formato json e ATUALIZA no banco de dados */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id)
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO categoriaDto, @PathVariable Integer id)
 	{
+		Categoria categoria = null;
+		
+		//converte o objeto dto para objeto normal
+		categoria = CategoriaService.fromDTO(categoriaDto);
+		
 		// força o id da url no objeto
-		obj.setId(id);
+		categoria.setId(id);
 
 		// chama a rn para atualizar o objeto que já tem um ID
-		obj = categoriaService.update(obj);
+		categoria = categoriaService.update(categoria);
 
 		// retorna uma resposta vazia
 		return ResponseEntity.noContent().build();
@@ -129,7 +139,7 @@ public class CategoriaResource
 
 		// percorre a lista e guarda os objetos de categoria na lista de categoriaDTo
 		listaCatDto = listaCategoria.map(obj -> new CategoriaDTO(obj));
-
+ 
 		// retorna a busca
 		return ResponseEntity.ok().body(listaCatDto);
 	}
