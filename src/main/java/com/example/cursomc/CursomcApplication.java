@@ -40,22 +40,16 @@ public class CursomcApplication implements CommandLineRunner
 	private CidadeRepository cidadeRepository;
 	@Autowired
 	private EstadoRepository estadoRepository;
-
 	@Autowired
 	private ClienteRepository clienteRepository;
-	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
-	
 	@Autowired
 	private ProdutoRepository produtoRepository;
-	
 	@Autowired
 	private PedidoRepository pedidoRepository;
-	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
-	
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
@@ -70,7 +64,12 @@ public class CursomcApplication implements CommandLineRunner
 	{
 		/* cria objetos para salvar no banco*/
 	 	Categoria catInformatica = new Categoria(null,"Informática");
-		Categoria catEscritorio = new Categoria(null,"Escritório");
+	 	Categoria catEscritorio = new Categoria(null,"Escritório");
+	 	Categoria cat1 = new Categoria(null,"Alimentos");
+	 	Categoria cat2 = new Categoria(null,"Higienicos");
+	 	Categoria cat3 = new Categoria(null,"Perfumaria");
+	 	Categoria cat4 = new Categoria(null,"Feirinha");
+		Categoria cat5 = new Categoria(null,"Naturais");
 		
 		Produto prComputador = new Produto(null, "Computador", 2000.00);
 		Produto prImpressora = new Produto(null, "Impressora", 2000.00);
@@ -86,7 +85,7 @@ public class CursomcApplication implements CommandLineRunner
 		prMouse.getCategorias().add(catInformatica);
 		
 		//salva todos objetos com os dados no banco
-		categoriaRepository.saveAll(Arrays.asList(catInformatica,catEscritorio));
+		categoriaRepository.saveAll(Arrays.asList(catInformatica,catEscritorio, cat1,cat2,cat3,cat4,cat5));
 		produtoRepository.saveAll(Arrays.asList(prComputador,prImpressora,prMouse));
 	
 		Estado esMinasGerais = new Estado(null,"Minas Gerais");

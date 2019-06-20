@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.example.cursomc.domain.Categoria;
@@ -77,5 +80,15 @@ public class CategoriaService
 	{
 		//busca no banco e retorna a lista de categorias
 		return categoriaRepository.findAll();
+	}
+	
+	/*busca todas as categorias no banco com limite de resulttados com paginação*/
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String sOrderBy, String sOrdem)
+	{
+		//monta os filtros
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(sOrdem), sOrderBy);
+		
+		//realiza a busca e retorna
+		return categoriaRepository.findAll(pageRequest);
 	}
 }
