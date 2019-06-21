@@ -52,10 +52,13 @@ public class CategoriaService
 	public Categoria update(Categoria categoria)
 	{
 		//verifica se o objeto já existe no banco e se não existir, o metodo lança uma excessao para fora do metodo
-		find(categoria.getId());
+		Categoria categoriaTemp = find(categoria.getId());
+		
+		//atualiza os novos dados para o objeto que veio preenchido do banco
+		updateData(categoriaTemp, categoria);
 		
 		//chama a dao para atualizar o objeto retornando o objeto resposta
-		return categoriaRepository.save(categoria);
+		return categoriaRepository.save(categoriaTemp);
 	}
 	
 	/**Recebe um id e deleta no banco*/
@@ -97,5 +100,11 @@ public class CategoriaService
 	public static Categoria fromDTO(CategoriaDTO categoriaDTO)
 	{
 		return new Categoria(categoriaDTO.getId(),categoriaDTO.getNome());
+	}
+	
+	//atualiza os dados de 2 objetos para salvar
+	private void updateData(Categoria newObj, Categoria obj)
+	{
+		newObj.setNome(obj.getNome());
 	}
 }
