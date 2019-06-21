@@ -9,7 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-/*lida com os erros do rest*/
+/*Captura e lida com vários tipos de erros do rest*/
 @ControllerAdvice
 public class ResourceExceptionHandler
 {
