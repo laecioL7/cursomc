@@ -1,5 +1,6 @@
 package com.example.cursomc.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.cursomc.domain.Cliente;
+import com.example.cursomc.domain.ClienteNovoDTO;
 import com.example.cursomc.dto.ClienteDTO;
 import com.example.cursomc.services.ClienteService;;
 
@@ -82,5 +85,22 @@ public class ClienteResource
 		Page<Cliente> list = clienteService.findPage(page, linesPerPage, orderBy, direction);
 		Page<ClienteDTO> listDto = list.map(obj -> new ClienteDTO(obj));
 		return ResponseEntity.ok().body(listDto);
+	}
+	
+	/*recebe um cliente via json para inserção*/
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNovoDTO objDto) 
+	{
+		//converte o objetoDto para objeto normal
+		Cliente obj = clienteService.fromDTO(objDto);
+		
+		//chama a rn para fazer a inserção do objeto no banco
+		obj = clienteService.insert(obj);
+		
+		//monta a resposta
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		
+		//envia a resposta da requisição
+		return ResponseEntity.created(uri).build();
 	}
 }
