@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.cursomc.domain.Cidade;
 import com.example.cursomc.domain.Cliente;
-import com.example.cursomc.domain.ClienteNovoDTO;
 import com.example.cursomc.domain.Endereco;
 import com.example.cursomc.domain.enums.TipoCliente;
 import com.example.cursomc.dto.ClienteDTO;
+import com.example.cursomc.dto.ClienteNovoDTO;
 import com.example.cursomc.exceptions.DataIntegrityException;
 import com.example.cursomc.exceptions.ObjectNotFoundException;
 import com.example.cursomc.repositories.ClienteRepository;

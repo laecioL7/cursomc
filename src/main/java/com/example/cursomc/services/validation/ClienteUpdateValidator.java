@@ -2,55 +2,54 @@ package com.example.cursomc.services.validation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerMapping;
 
 import com.example.cursomc.domain.Cliente;
-import com.example.cursomc.domain.enums.TipoCliente;
-import com.example.cursomc.dto.ClienteNovoDTO;
+import com.example.cursomc.dto.ClienteDTO;
 import com.example.cursomc.exceptions.FieldMessage;
 import com.example.cursomc.repositories.ClienteRepository;
 
-import util.Apoio;
-
 /**Validador personalizado para ser utilizado no lugar do @Valid padrão*/
-public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNovoDTO>
+public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate, ClienteDTO>
 {
 	
 	@Autowired
 	ClienteRepository clienteRepository;
+	
+	@Autowired
+	HttpServletRequest request;
 
 	@Override
-	public void initialize(ClienteInsert ann)
+	public void initialize(ClienteUpdate ann)
 	{
 	}
 
 	@Override
-	public boolean isValid(ClienteNovoDTO clienteNovoDto, ConstraintValidatorContext context)
+	public boolean isValid(ClienteDTO clienteDto, ConstraintValidatorContext context)
 	{
 		Cliente clienteAux = null;
 		List<FieldMessage> listaErros = new ArrayList<>();
-
-		//valida o cpf do cliente pessoa fisica
-		if (clienteNovoDto.getTipo().equals(TipoCliente.PESSOAFISICA.getCod()) && !Apoio.isValidCPF(clienteNovoDto.getCpfOuCnpj()))
-		{
-			listaErros.add(new FieldMessage("cpfOuCnpj", "CPF inválido"));
-		}
-
-		//valida o cpf do cliente pessoa juridica
-		if (clienteNovoDto.getTipo().equals(TipoCliente.PESSOAJURIDICA.getCod()) && !Apoio.isValidCNPJ(clienteNovoDto.getCpfOuCnpj()))
-		{
-			listaErros.add(new FieldMessage("cpfOuCnpj", "CNPJ inválido"));
-		}
+		Integer uriId = null;
+		
+		//obtem os parametros passados na requisição via url para pegar o id do cliente
+		@SuppressWarnings("unchecked")
+		Map<String, String> map = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+		
+		//obtem o id da url
+		uriId = Integer.parseInt(map.get("id"));
 		
 		//verifica se já existe cliente com o email cadastrado
-		clienteAux = clienteRepository.findByEmail(clienteNovoDto.getEmail());
+		clienteAux = clienteRepository.findByEmail(clienteDto.getEmail());
 		
-		//se retornou cliente é porque o email já existe
-		if (clienteAux != null) 
+		//se retornou cliente e o id do cliente atual for diferente do dono do email é porque o email já existe com outro usuário
+		if (clienteAux != null && !clienteAux.getId().equals(uriId)) 
 		{
 			listaErros.add(new FieldMessage("email", "Email já existente"));
 		}

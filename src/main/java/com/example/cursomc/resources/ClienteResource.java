@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.cursomc.domain.Cliente;
-import com.example.cursomc.domain.ClienteNovoDTO;
 import com.example.cursomc.dto.ClienteDTO;
+import com.example.cursomc.dto.ClienteNovoDTO;
 import com.example.cursomc.services.ClienteService;;
 
 /** É o mesmo que uma RN para Cliente */
