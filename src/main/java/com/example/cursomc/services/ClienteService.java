@@ -84,11 +84,12 @@ public class ClienteService
 
 		try
 		{
-			// realiza a exclusão
+			// realiza a exclusão se não tiver pedidos atrelados
 			clienteRepository.deleteById(id);
-		} catch (DataIntegrityViolationException e)
+		}
+		catch (DataIntegrityViolationException e)
 		{
-			throw new DataIntegrityException("Não é possível excluir porque há pedidos relacionadas");
+			throw new DataIntegrityException("Não é possível excluir porque há pedidos relacionados");
 		}
 	}
 
