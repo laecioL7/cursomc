@@ -40,12 +40,16 @@ public class ProdutoResource
 			@RequestParam(value="orderBy", defaultValue="nome") String orderBy, 
 			@RequestParam(value="direction", defaultValue="ASC") String direction)
 	{
+		//quando o nome tem espaço ele vem com um caracter no lugar então faz o decode dele
 		String nomeDecoded = Apoio.decodeParam(nome);
 		
+		//transforma a lista de strings em lista de integer
 		List<Integer> ids = Apoio.decodeIntList(categorias);
 		
+		//chama o metodo de busca da rn passando os parametros
 		Page<Produto> list = service.search(nomeDecoded, ids, page, linesPerPage, orderBy, direction);
 		
+		//para cada objeto da lista instancia um novo objeto ProdutodDto
 		Page<ProdutoDTO> listDto = list.map(obj -> new ProdutoDTO(obj));  
 		
 		return ResponseEntity.ok().body(listDto);
