@@ -63,30 +63,59 @@ public class CursomcApplication implements CommandLineRunner
 	public void run(String... args) throws Exception
 	{
 		/* cria objetos para salvar no banco*/
-	 	Categoria catInformatica = new Categoria(null,"Informática");
-	 	Categoria catEscritorio = new Categoria(null,"Escritório");
-	 	Categoria cat1 = new Categoria(null,"Alimentos");
-	 	Categoria cat2 = new Categoria(null,"Higienicos");
+	 	Categoria cat1 = new Categoria(null,"Informática");
+	 	Categoria cat2 = new Categoria(null,"Escritório");
 	 	Categoria cat3 = new Categoria(null,"Perfumaria");
 	 	Categoria cat4 = new Categoria(null,"Feirinha");
 		Categoria cat5 = new Categoria(null,"Naturais");
+		Categoria cat6 = new Categoria(null,"Massas");
+		Categoria cat7 = new Categoria(null,"PetShop");
 		
-		Produto prComputador = new Produto(null, "Computador", 2000.00);
-		Produto prImpressora = new Produto(null, "Impressora", 2000.00);
-		Produto prMouse = new Produto(null, "Mouse", 2000.00);
+		Produto p1 = new Produto(null, "Computador", 2000.00);
+		Produto p2 = new Produto(null, "Impressora", 2000.00);
+		Produto p3 = new Produto(null, "Mouse", 2000.00);
+		Produto p4 = new Produto(null, "Mesa de escritório", 300.00);
+		Produto p5 = new Produto(null, "Toalha", 50.00);
+		Produto p6 = new Produto(null, "Colcha", 200.00);
+		Produto p7 = new Produto(null, "TV true color", 1200.00);
+		Produto p8 = new Produto(null, "Roçadeira", 800.00);
+		Produto p9 = new Produto(null, "Abajour", 100.00);
+		Produto p10 = new Produto(null, "Pendente", 180.00);
+		Produto p11 = new Produto(null, "Shampoo", 90.00);
 		
 		//obtem a lista . adiciona todos os itens de produto na lista de produtos da categoria
-		catInformatica.getProdutos().addAll(Arrays.asList(prComputador,prImpressora, prMouse));
-		catEscritorio.getProdutos().add(prImpressora);
+		cat1.getProdutos().addAll(Arrays.asList(p1,p2, p3));
+		cat2.getProdutos().add(p2);
 		
 		//obtem a lista . adiciona todos os itens de categorias na lista de categorias de produtos
-		prComputador.getCategorias().add(catInformatica);
-		prImpressora.getCategorias().addAll(Arrays.asList(catInformatica,catEscritorio));
-		prMouse.getCategorias().add(catInformatica);
+		p1.getCategorias().add(cat1);
+		p2.getCategorias().addAll(Arrays.asList(cat1,cat2));
+		p3.getCategorias().add(cat1);
+		
+		//associa os produtos a categorias
+		cat2.getProdutos().addAll(Arrays.asList(p2, p4));
+		cat3.getProdutos().addAll(Arrays.asList(p5, p6));
+		cat4.getProdutos().addAll(Arrays.asList(p1, p2, p3, p7));
+		cat5.getProdutos().addAll(Arrays.asList(p8));
+		cat6.getProdutos().addAll(Arrays.asList(p9, p10));
+		cat7.getProdutos().addAll(Arrays.asList(p11));
+		
+		//associa as categorias aos produtos
+		p1.getCategorias().addAll(Arrays.asList(cat1, cat4));
+		p2.getCategorias().addAll(Arrays.asList(cat1, cat2, cat4));
+		p3.getCategorias().addAll(Arrays.asList(cat1, cat4));
+		p4.getCategorias().addAll(Arrays.asList(cat2));
+		p5.getCategorias().addAll(Arrays.asList(cat3));
+		p6.getCategorias().addAll(Arrays.asList(cat3));
+		p7.getCategorias().addAll(Arrays.asList(cat4));
+		p8.getCategorias().addAll(Arrays.asList(cat5));
+		p9.getCategorias().addAll(Arrays.asList(cat6));
+		p10.getCategorias().addAll(Arrays.asList(cat6));
+		p11.getCategorias().addAll(Arrays.asList(cat7));
 		
 		//salva todos objetos com os dados no banco
-		categoriaRepository.saveAll(Arrays.asList(catInformatica,catEscritorio, cat1,cat2,cat3,cat4,cat5));
-		produtoRepository.saveAll(Arrays.asList(prComputador,prImpressora,prMouse));
+		categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3,cat4,cat5, cat6, cat7));
+		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
 	
 		Estado esMinasGerais = new Estado(null,"Minas Gerais");
 		Estado esSaoPaulo = new Estado(null,"São Paulo");
@@ -145,18 +174,18 @@ public class CursomcApplication implements CommandLineRunner
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 		
 		//items pedido
-		ItemPedido ip1 = new ItemPedido(ped1, prComputador, 0.00, 1, 2000.00);
-		ItemPedido ip2 = new ItemPedido(ped1, prMouse, 0.00, 2, 80.00);
-		ItemPedido ip3 = new ItemPedido(ped2, prImpressora, 100.00, 1, 800.00);
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
 		
 		//salva os dados de ItemPedido em pedido / referencia inversa
 		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
 		ped2.getItens().addAll(Arrays.asList(ip3));
 		
 		//salva os dados de ItemPedido em produto / referencia inversa
-		prComputador.getItens().addAll(Arrays.asList(ip1));
-		prMouse.getItens().addAll(Arrays.asList(ip3));
-		prImpressora.getItens().addAll(Arrays.asList(ip2));
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p3.getItens().addAll(Arrays.asList(ip3));
+		p2.getItens().addAll(Arrays.asList(ip2));
 		
 		//salva no banco
 		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
