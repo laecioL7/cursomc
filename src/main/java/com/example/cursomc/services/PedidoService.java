@@ -35,6 +35,9 @@ public class PedidoService
 
 	@Autowired
 	private ProdutoService produtoService;
+	
+	@Autowired
+	private ClienteService clienteService;
 
 	/** Busca uma categoria dado um ID */
 	public Pedido buscar(Integer iId)
@@ -57,6 +60,9 @@ public class PedidoService
 		
 		//define a data de criação
 		obj.setInstante(new Date());
+		
+		//grava o cliente do pedido
+		obj.setCliente(clienteService.find(obj.getCliente().getId()));
 		
 		//define o status de pagamento
 		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
@@ -86,6 +92,8 @@ public class PedidoService
 			//monta os dados do item
 			ip.setDesconto(0.0);
 			ip.setPreco(produtoService.find(ip.getProduto().getId()).getPreco());
+			ip.setProduto(produtoService.find(ip.getProduto().getId()));
+			ip.setPreco(ip.getProduto().getPreco());
 			ip.setPedido(obj);
 		}
 		
