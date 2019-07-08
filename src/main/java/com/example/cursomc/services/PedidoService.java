@@ -38,6 +38,9 @@ public class PedidoService
 	
 	@Autowired
 	private ClienteService clienteService;
+	
+	@Autowired
+	private EmailService emailService;
 
 	/** Busca uma categoria dado um ID */
 	public Pedido buscar(Integer iId)
@@ -99,6 +102,9 @@ public class PedidoService
 		
 		//salva todos os itens do pedido no banco
 		itemPedidoRepository.saveAll(obj.getItens());
+		
+		//envia o email com os dados do pedido
+		emailService.sendOrderConfirmationEmail(obj);
 		
 		//retorna o objeto pedido
 		return obj;

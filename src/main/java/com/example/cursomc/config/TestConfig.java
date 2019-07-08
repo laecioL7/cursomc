@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.example.cursomc.services.DBService;
+import com.example.cursomc.services.EmailService;
+import com.example.cursomc.services.MockEmailService;
 
 /**
  * Configuração personalizada de quando este profile estiver ativo
@@ -26,5 +28,12 @@ public class TestConfig
 		dbService.instantiateTestDataBase();
 		
 		return true;
+	}
+	
+	/*Instanciado pelo autowired do spring*/
+	@Bean
+	public EmailService emailService() 
+	{
+		return new MockEmailService();
 	}
 }
